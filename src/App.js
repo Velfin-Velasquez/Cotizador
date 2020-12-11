@@ -1,5 +1,6 @@
 import { Header } from "./components/Header";
 import styled from "@emotion/styled";
+import { Formulario } from "./components/Formulario";
 
 const Contenedor = styled.div`
   max-width: 600px;
@@ -15,7 +16,9 @@ function App() {
   return (
     <Contenedor>
       <Header titulo="Cotizador de Seguros de autos" />
-      <ContenedorFormulario></ContenedorFormulario>
+      <ContenedorFormulario>
+        <Formulario />
+      </ContenedorFormulario>
     </Contenedor>
   );
 }
