@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 const Campo = styled.div`
@@ -41,12 +41,68 @@ const Boton = styled.button`
   }
 `;
 
+const Error = styled.div`
+  background-color: red;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
 export const Formulario = () => {
+  //definir state
+  const [datos, guardarDatos] = useState({
+    marca: "",
+    year: "",
+    plan: "",
+  });
+  const [error, guardarError] = useState(false);
+
+  //extraer valores
+  const { marca, year, plan } = datos;
+
+  //funcion para obtener datos
+  const obtenerInfo = (e) => {
+    guardarDatos({
+      ...datos,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  //cuando el usuario envia el formulario
+  const cotizarseguro = (e) => {
+    e.preventDefault();
+
+    //validar
+    if (marca.trim() === "" || year.trim() === "" || plan.trim() === "") {
+      guardarError(true);
+      return;
+    }
+
+    //si pasa la validacion
+    guardarError(false);
+
+    //obtener diferencia de años
+
+    //por cada año hay que restar 3%
+
+    //Americano 15%
+    //Asiatico 5%
+    //Europeo 30%
+
+    //Basico aumenta 20%
+    //Completo 50%
+
+    //total
+  };
+
   return (
-    <form>
+    <form onSubmit={cotizarseguro}>
+      {error ? <Error>Hay campos vacios</Error> : null}
+
       <Campo>
         <Label>Marca</Label>
-        <Select>
+        <Select value={marca} name="marca" onChange={obtenerInfo}>
           <option value="">---Seleccionar---</option>
           <option value="americano">Americano</option>
           <option value="europeo">Europeo</option>
@@ -54,8 +110,8 @@ export const Formulario = () => {
         </Select>
       </Campo>
       <Campo>
-        <Label>Marca</Label>
-        <Select>
+        <Label>Año</Label>
+        <Select value={year} name="year" onChange={obtenerInfo}>
           <option value="">-- Seleccione --</option>
           <option value="2021">2021</option>
           <option value="2020">2020</option>
@@ -71,12 +127,24 @@ export const Formulario = () => {
       </Campo>
       <Campo>
         <Label>Plan</Label>
-        <ImputRadio type="radio" name="plan" value="basico" />
+        <ImputRadio
+          checked={plan === "basico"}
+          type="radio"
+          name="plan"
+          value="basico"
+          onChange={obtenerInfo}
+        />
         basico
-        <ImputRadio type="radio" name="plan" value="completo" />
+        <ImputRadio
+          checked={plan === "completo"}
+          type="radio"
+          name="plan"
+          value="completo"
+          onChange={obtenerInfo}
+        />
         Completo
       </Campo>
-      <Boton type="button">Cotizar</Boton>
+      <Boton type="submit">Cotizar</Boton>
     </form>
   );
 };
