@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { Formulario } from "./components/Formulario";
 import { Resumen } from "./components/Resumen";
 import { Resultado } from "./components/Resultado";
+import { Spiner } from "./components/Spiner";
 
 const Contenedor = styled.div`
   max-width: 600px;
@@ -16,6 +17,7 @@ const ContenedorFormulario = styled.div`
 `;
 
 function App() {
+  //definir el state
   const [resumen, guardarResumen] = useState({
     cotizacion: 0,
     datos: {
@@ -25,15 +27,21 @@ function App() {
     },
   });
 
+  const [cargando, guardarCargando] = useState(false);
+
   const { cotizacion, datos } = resumen;
 
   return (
     <Contenedor>
       <Header titulo="Cotizador de Seguros de autos" />
       <ContenedorFormulario>
-        <Formulario guardarResumen={guardarResumen} />
+        <Formulario
+          guardarResumen={guardarResumen}
+          guardarCargando={guardarCargando}
+        />
+        {cargando ? <Spiner /> : null}
         <Resumen datos={datos} />
-        <Resultado cotizacion={cotizacion} />
+        {!cargando ? <Resultado cotizacion={cotizacion} /> : null}
       </ContenedorFormulario>
     </Contenedor>
   );
